@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuiz Repurpose Interaktif 🌿</title>
+<style>
+  body {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    padding-bottom: 60px;
+    background: url('https://st5.depositphotos.com/26552730/65016/i/450/depositphotos_650166210-stock-photo-rusty-teapots-repurposed-sustainable-garden.jpg') no-repeat center center fixed;
+    background-size: cover;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.50);
+    z-index: -1;
+  }
+
+  header, footer {
+    background: #2e7d32;
+    color: white;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  header {
+    padding: 15px 10px;
+    border-radius: 0 0 15px 15px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  footer {
+    padding: 12px 10px;
+    border-radius: 15px 15px 0 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+  }
+
+  .container {
+    max-width: 700px;
+    margin: 40px auto;
+    background: white;
+    padding: 30px 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    animation: fadeIn 0.5s ease;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+
+  h1 {
+    text-align: center;
+    color: #2e7d32;
+    margin-bottom: 20px;
+  }
+
+  .question { display: none; }
+  .active {
+    display: block;
+    animation: fadeIn 0.6s ease;
+  }
+
+  .question p {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1b5e20;
+  }
+
+  label {
+    display: block;
+    background: #f9fbe7;
+    padding: 10px 14px;
+    margin: 8px 0;
+    border-radius: 10px;
+    border: 1px solid #c5e1a5;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  label:hover {
+    background: #dcedc8;
+  }
+
+  #result {
+    display: none;
+    text-align: center;
+    padding: 20px;
+    background: #e8f5e9;
+    border-radius: 15px;
+    color: #1b5e20;
+    font-weight: 600;
+    margin-top: 20px;
+    animation: zoomIn 0.5s ease;
+  }
+
+  @keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  #result h2 {
+    font-size: 28px;
+    color: #2e7d32;
+  }
+
+  #result .score {
+    font-size: 40px;
+    font-weight: 700;
+    margin-top: 10px;
+  }
+
+  #resetBtn {
+    background: #e53935;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+    display: none;
+  }
+
+  #resetBtn:hover {
+    background: #c62828;
+  }
+
+  img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-bottom: 15px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  Program Pendedahan 5R dalam Pengurusan Sampah di Kalangan Warga Kent
+</header>
+
+<div class="container">
+  <h1>Kuiz Repurpose 🌿</h1>
+  <div id="quiz"></div>
+  <div id="result"></div>
+  <button id="resetBtn" onclick="resetQuiz()">Reset Kuiz</button>
+</div>
+
+<footer>
+  Disediakan oleh Bluster, Bryon, Eyrik, Enziela, Georgina (PISMP BKD 21/26)
+</footer>
+
+<script>
+const quizData = [
+  {q:"Apakah perbezaan utama antara Reuse (Guna Semula) dan Repurpose (Guna Semula Tujuan Lain) dalam hierarki 5R?",img:"https://st.depositphotos.com/1081417/4216/i/450/depositphotos_42165957-stock-photo-repurpose.jpg",options:["Reuse hanya untuk plastik, Repurpose untuk kaca.","Reuse mengekalkan fungsi asal; Repurpose mengubah fungsi asal untuk kegunaan baharu.","Reuse menjimatkan wang; Repurpose menjimatkan masa.","Reuse hanya untuk barangan sekali guna, Repurpose untuk barangan tahan lama."],correct:1},
+  {q:"Konsep Repurpose sering dikaitkan dengan istilah apa?",img:"https://www.shutterstock.com/image-photo/recycle-reduce-reuse-zero-waste-260nw-2482384725.jpg",options:["Downcycling.","Upcycling (Kitar Semula Naik Nilai).","Refill.","Recovery."],correct:1},
+  {q:"Anda mempunyai tayar kereta lama yang tidak boleh digunakan lagi. Projek Repurpose yang paling sesuai untuk tayar ini di taman ialah...",img:"https://plus.unsplash.com/premium_photo-1683133531613-6a7db8847c72?fm=jpg&q=60&w=3000",options:["Mencairkannya untuk dijadikan plastik baharu.","Dijadikan pasu bunga yang dicat atau hiasan tempat duduk.","Diberikan kepada pusat kitar semula tayar.","Memotongnya menjadi kepingan kecil untuk mengisi karung sampah."],correct:1},
+  {q:"Apakah tujuan utama Repurpose dari sudut pandangan alam sekitar?",img:"https://i.pinimg.com/736x/be/c8/9d/bec89d52303d4432113b3ef1a91f64f8.jpg",options:["Mencipta barangan yang mahal.","Mengelakkan bahan buangan daripada dihantar ke tapak pelupusan dan memanjangkan hayatnya.","Menghasilkan lebih banyak sisa organik.","Mengurangkan penggunaan air bersih."],correct:1},
+  {q:"Jika anda menggunakan semula balang lilin kaca yang kosong untuk menyimpan klip kertas dan pen di meja anda, tindakan ini dikenali sebagai...",img:"https://st5.depositphotos.com/26552730/65016/i/450/depositphotos_650166210-stock-photo-rusty-teapots-repurposed-sustainable-garden.jpg",options:["Reduce.","Recycle.","Repurpose.","Rot."],correct:2},
+  {q:"Anda mempunyai beberapa palet kayu terbuang daripada pembinaan. Projek Repurpose yang kreatif ialah menukarkannya kepada...",img:"https://st3.depositphotos.com/3201021/37660/i/450/depositphotos_376608548-stock-photo-paper-bag-recycle-sign-flowers.jpg",options:["Bahan api untuk dibakar.","Makanan untuk kompos.","Perabot luar seperti sofa atau meja kopi.","Kertas untuk dicetak."],correct:2},
+  {q:"Menukar sehelai t-shirt yang koyak menjadi kain lap (rag) untuk mengelap kotoran dapur adalah contoh bagi konsep...",img:"https://png.pngtree.com/thumb_back/fw800/background/20250716/pngtree-vintage-watering-can-repurposed-as-a-hanging-planter-overflowing-with-trailing-image_17616247.webp",options:["Refuse.","Repurpose.","Reuse (kerana masih guna kain).","Repair."],correct:1},
+  {q:"Mengapa Repurpose dianggap lebih baik daripada Recycle (Kitar Semula) dalam hierarki pengurusan sisa?",img:"https://st2.depositphotos.com/5339154/46789/i/450/depositphotos_467898154-stock-photo-importance-recycling-different-types-garbage.jpg",options:["Repurpose menjana lebih banyak keuntungan.","Repurpose memerlukan tenaga dan kos pemprosesan yang jauh lebih rendah berbanding Recycle.","Repurpose hanya menggunakan bahan organik.","Recycle lebih rumit untuk dilakukan di rumah."],correct:1},
+  {q:"Apakah cabaran terbesar yang mungkin dihadapi semasa mempraktikkan Repurpose?",img:"https://st2.depositphotos.com/8543466/43326/i/450/depositphotos_433269744-stock-photo-volunteers-hands-putting-grocery-products.jpg",options:["Kekurangan bahan buangan.","Kekurangan kreativiti atau kemahiran untuk mengubah suai.","Harga barang terbuang yang terlalu mahal.","Terlalu banyak pusat kitar semula."],correct:1},
+  {q:"Apabila anda mengubah kotak kadbod yang besar dan kukuh menjadi storan barang atau mainan di bilik tidur, adakah ini Repurpose?",img:"https://img.freepik.com/free-photo/close-up-volunteer-food-box_23-2149182040.jpg?semt=ais_incoming&w=740&q=80",options:["Tidak, kerana ia masih kotak.","Ya, kerana fungsi asal (membungkus produk) telah diubah kepada fungsi baharu (penyimpanan kekal).","Tidak, ini adalah Reuse.","Ya, tetapi hanya jika anda mengecatnya."],correct:1}
+];
+
+const soundClick = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_ae8c328df5.mp3?filename=select-002-337219.mp3");
+const soundFail = new Audio("https://cdn.pixabay.com/download/audio/2022/03/15/audio_8810cfa04f.mp3?filename=fail-234710.mp3");
+const soundWin = new Audio("https://cdn.pixabay.com/download/audio/2021/09/30/audio_1d5de9cd1f.mp3?filename=winning-218995.mp3");
+
+let currentQ = 0, score = 0;
+const quizContainer = document.getElementById("quiz");
+const resultContainer = document.getElementById("result");
+const resetBtn = document.getElementById("resetBtn");
+
+function showQuestion(index){
+  quizContainer.innerHTML = "";
+  const qData = quizData[index];
+  const qDiv = document.createElement("div");
+  qDiv.classList.add("question","active");
+  qDiv.innerHTML = `
+    <img src="${qData.img}" alt="Imej soalan">
+    <p>${index + 1}. ${qData.q}</p>
+    ${qData.options.map((opt,i)=>`
+      <label><input type="radio" name="answer" value="${i}" onclick="handleAnswer(${i})"> ${opt}</label>
+    `).join("")}
+  `;
+  quizContainer.appendChild(qDiv);
+}
+
+function handleAnswer(selected){
+  soundClick.play();
+  if(selected === quizData[currentQ].correct) score++;
+  currentQ++;
+  setTimeout(()=>{
+    if(currentQ < quizData.length) showQuestion(currentQ);
+    else showResult();
+  },500);
+}
+
+function showResult(){
+  quizContainer.style.display="none";
+  resultContainer.style.display="block";
+  const percent = Math.round((score/quizData.length)*100);
+  let color = score < 5 ? "#e53935" : score < 8 ? "#f9a825" : "#2e7d32";
+  resultContainer.innerHTML = `
+    <h2>Kuiz Selesai! 🌿</h2>
+    <div class="score" style="color:${color};">${score}/${quizData.length} (${percent}%)</div>
+  `;
+  if(score < 5) soundFail.play(); else soundWin.play();
+  resetBtn.style.display="inline-block";
+}
+
+function resetQuiz(){
+  currentQ=0; score=0;
+  resultContainer.style.display="none";
+  resetBtn.style.display="none";
+  quizContainer.style.display="block";
+  showQuestion(0);
+}
+
+showQuestion(0);
+</script>
+
+</body>
+</html>
